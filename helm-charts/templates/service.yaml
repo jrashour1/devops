@@ -1,6 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
   name: {{ .Values.name }}-service
   labels:
     svc: {{ .Values.name }}
@@ -11,4 +15,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: {{ .Values.containerPort }}
-  type: ClusterIP
+  type: LoadBalancer

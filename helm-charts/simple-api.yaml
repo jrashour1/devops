@@ -1,5 +1,5 @@
 name: simple-api
-dockerImage: jrashour/simple-api:74dc03c401afa27d84573279a7830396a30650f0
+dockerImage: jrashour/simple-api:d59972575461c2e03ef4222261e9432bf9d748cb
 containerPort: 5200
 envVariables:
   - key: sampleKey

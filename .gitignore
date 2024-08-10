@@ -1,0 +1,15 @@
+# Ignore all Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform backup files
+*.tfstate.backup
+*.terraform.lock.hcl
+
+# Ignore the Terraform directory which contains plugin binaries and metadata
+.terraform/
+
+# Ignore Terraform variable files (if used)
+*.tfvars
+*.tfvars.json
+.DS_Store

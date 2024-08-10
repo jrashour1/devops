@@ -1,0 +1,7 @@
+name: simple-client
+dockerImage: jrashour/simple-client:0fe690fc534eb60166d7ff635809c6345581c6a8
+containerPort: 8080
+envVariables:
+  - key: sampleKey
+    value: sampleValue
+serviceSecretAwsName: "/test/simple-client"

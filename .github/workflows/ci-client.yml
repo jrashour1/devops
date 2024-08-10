@@ -1,0 +1,48 @@
+name: ci pipeline for service client
+on:
+    push:
+      branches:
+        - main
+      paths: 
+        - mean-stack-example/client/**
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+          contents: write
+        steps:
+           - name: Checkout code
+             uses: actions/checkout@v3
+
+           - name: Log in to Docker Hub
+             uses: docker/login-action@v2
+             with:
+                username: ${{ secrets.DOCKER_HUB_USERNAME }}
+                password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+           - name: build docker image
+             env: 
+              URL: ${{vars.URL}}
+             run: docker build ./mean-stack-example/client -t ${{ secrets.DOCKER_HUB_USERNAME }}/simple-client:${{ github.sha }} --build-arg URL=$URL
+
+           - name: push docker image to docker hub
+             run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/simple-client:${{ github.sha }} 
+    update-helm-values:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+              with:
+                token: ${{ secrets.PAT }}
+            - name: Update Helm values file
+              uses: mikefarah/yq@master
+              with:
+                cmd: yq -i '.dockerImage  = "${{ secrets.DOCKER_HUB_USERNAME }}/simple-client:${{ github.sha }}"' helm-charts/simple-client.yaml
+            - name: Commit and push updated values file
+              run: |
+               git config --global user.name "GitHub Actions"
+               git config --global user.email "actions@github.com"
+               git add .
+               git commit -m "update: helm values file with new image tag ${IMAGE_TAG}"
+               git push origin

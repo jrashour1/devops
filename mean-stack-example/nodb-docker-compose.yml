@@ -1,0 +1,16 @@
+name: fullstack-app
+services:
+  client:
+    build: 
+      context: ./client
+      args:
+        - URL=http://localhost:5200
+    ports:
+      - 8080:8080
+  backend:
+    build:
+      context: ./server
+    environment:
+      - ATLAS_URI=________YOUR________DB______CONNECTION_____STRING
+    ports:
+      - 5200:5200

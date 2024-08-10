@@ -1,0 +1,9 @@
+name: simple-api
+dockerImage: jrashour/simple-api:74dc03c401afa27d84573279a7830396a30650f0
+containerPort: 5200
+envVariables:
+  - key: sampleKey
+    value: sampleValue
+serviceSecretAwsName: "/test/simple-api"
+serviceSecretKeys:
+  - ATLAS_URI

@@ -1,0 +1,28 @@
+name: fullstack-app
+services:
+  client:
+    build: 
+      context: ./client
+      args:
+        - URL=http://localhost:5200
+    ports:
+      - 8080:8080
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: username
+      MONGO_INITDB_ROOT_PASSWORD: password123456
+  backend:
+    depends_on:
+      - mongodb
+    build:
+      context: ./server
+    environment:
+      - ATLAS_URI=mongodb://username:password123456@mongodb:27017/
+    ports:
+      - 5200:5200
+volumes:
+  mongo_data:

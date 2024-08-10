@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-deployment
+  labels:
+    svc: {{.Values.name}}
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      svc: {{.Values.name}}
+    
+  template:
+    metadata:
+      labels:
+        svc: {{.Values.name}}
+    spec:
+      containers:
+      - name: {{.Values.name}}
+        image: {{.Values.dockerImage}}
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: {{.Values.containerPort}}
+        env:
+          {{- $appName := .Values.name }}
+          {{- if .Values.serviceSecretKeys }}
+          {{- range .Values.serviceSecretKeys }}
+          - name: {{ . }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-secrets" $appName }}
+                key: {{ . }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.envVariables }}
+          {{- range .Values.envVariables }}
+          - name: {{ .key }}
+            value: "{{ .value }}" 
+          {{- end }}
+          {{- end }}

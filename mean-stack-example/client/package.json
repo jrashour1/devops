@@ -4,8 +4,8 @@
   "license": "Apache 2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": " node genrate_url.mjs && ng serve",
+    "build": " node genrate_url.mjs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:client": "node dist/client/server/server.mjs"

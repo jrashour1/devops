@@ -1,5 +1,5 @@
 name: simple-client
-dockerImage: jrashour/simple-client:a960ab1211e39094577c45f815ef7880e6913611
+dockerImage: jrashour/simple-client:8eebd46166d14caab948741234501dd5d1e3bff3
 containerPort: 8080
 envVariables:
   - key: sampleKey
